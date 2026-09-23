@@ -11,7 +11,6 @@ $recurso = $_GET['recurso'] ?? null;
 $acao = $_GET['acao'] ?? 'listar';
 $id = $_GET['id'] ?? null;
 
-// Rotas públicas: login/sair, e criar conta nova (candidato ou empresa)
 $ehLogin = ($recurso === 'auth');
 $ehCadastroPublico = in_array($recurso, ['candidatos', 'empresas']) && in_array($acao, ['novo', 'cadastrar']);
 
@@ -35,11 +34,23 @@ if (!$logado) {
 
 if ($recurso === null) {
     switch ($_SESSION['tipo']) {
-        case 'candidato': $destino = 'candidatos'; break;
+        case 'candidato': $destino = 'vagas';       break;
         case 'empresa':   $destino = 'vagas';       break;
         default:          $destino = 'candidatos';  // admin
     }
     header("Location: index.php?recurso=$destino&acao=listar");
+    exit;
+}
+
+
+$permissoesPorTipo = [
+    'candidato' => ['vagas', 'candidaturas', 'candidatos'],
+    'empresa'   => ['vagas', 'candidaturas', 'candidatos', 'empresas'],
+    'admin'     => ['candidatos', 'empresas', 'vagas', 'candidaturas'],
+];
+
+if (!in_array($recurso, $permissoesPorTipo[$_SESSION['tipo']] ?? [])) {
+    header("Location: index.php");
     exit;
 }
 

@@ -21,7 +21,7 @@ class AuthController
                 $_SESSION['tipo'] = 'candidato';
                 $_SESSION['id'] = $candidato['id'];
                 $_SESSION['nome'] = $candidato['nome'];
-                header("Location: index.php?recurso=candidatos&acao=listar");
+                header("Location: index.php?recurso=vagas&acao=listar");
                 exit;
             }
 

@@ -19,6 +19,18 @@ class VagaModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function buscarPorEmpresa($empresaId)
+    {
+        $sql = "SELECT vagas.*, empresas.nome_fantasia
+                FROM vagas
+                JOIN empresas ON empresas.id = vagas.empresa_id
+                WHERE vagas.empresa_id = :empresa_id
+                ORDER BY vagas.criado_em DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['empresa_id' => $empresaId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function buscarPorId($id)
     {
         $stmt = $this->db->prepare("SELECT * FROM vagas WHERE id = :id");

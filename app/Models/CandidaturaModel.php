@@ -20,6 +20,26 @@ class CandidaturaModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function buscarPorCandidato($candidatoId)
+    {
+        $sql = "SELECT candidaturas.*, vagas.titulo AS vaga_titulo, status_candidatura.descricao AS status
+                FROM candidaturas
+                JOIN vagas ON vagas.id = candidaturas.vaga_id
+                JOIN status_candidatura ON status_candidatura.id = candidaturas.status_candidatura_id
+                WHERE candidaturas.candidato_id = :candidato_id
+                ORDER BY candidaturas.id DESC";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['candidato_id' => $candidatoId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function jaCandidatou($candidatoId, $vagaId)
+{
+    $stmt = $this->db->prepare("SELECT id FROM candidaturas WHERE candidato_id = :candidato_id AND vaga_id = :vaga_id");
+    $stmt->execute(['candidato_id' => $candidatoId, 'vaga_id' => $vagaId]);
+    return (bool) $stmt->fetch();
+}
+
     public function criar($candidatoId, $vagaId)
     {
         $stmt = $this->db->prepare("INSERT INTO candidaturas (candidato_id, vaga_id) VALUES (:candidato_id, :vaga_id)");
