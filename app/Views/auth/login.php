@@ -1,6 +1,20 @@
 <?php
 $erro = $erro ?? null;
-$apoiadoras = (new EmpresaModel($pdo))->buscarTodos();
+
+// Lista fixa: patrocinadoras/apoiadoras do Programa Jovem Programador (PJP) em
+// geral, não cadastros do SinalDev. O SinalDev nasce dentro desse ecossistema,
+// mas essas empresas não têm vínculo direto com a plataforma — por isso a
+// lista é estática aqui, e não vem da tabela `empresas`.
+$patrocinadores = [
+    'HartSystem Sistemas', 'CloudPark', 'dev10 pedidos10', 'mhtec', 'datainfo',
+    'ap.controle', 'Clubes Associados', 'Grupo BST Sistemas', 'ADM Sistemas',
+    'WK', 'Senior', 'ndd', 'Softplan', 'Benner', 'DataRunk', 'DataFrete', 'CB Sistemas',
+];
+$apoiadores = [
+    'Communitech', 'ORION Parque Tecnológico', 'NSC TV', 'Gene Conecta', 'NOVALE Hub',
+    'CollabTech', 'INOVALE', 'AMURELTEC/ACITE', 'Sigma Park', 'ACATE',
+    'SOMAR Vale Europeu', 'Fundação CITEB', 'CIB Centro de Inovação Blumenau', 'Sesc Fecomércio Senac',
+];
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -45,20 +59,20 @@ $apoiadoras = (new EmpresaModel($pdo))->buscarTodos();
         <h2 style="font-size:1.4rem;">Todo talento começa dando um sinal</h2>
         <p class="lead">A primeira linha de código que funciona. O primeiro problema resolvido sozinho. O SinalDev existe pra captar esse sinal cedo — transforma o cadastro de cada aluno e ex-aluno do PJP num perfil estruturado, filtrável por tecnologia, nível e disponibilidade, e coloca ele na frente de quem está pronto pra contratar.</p>
 
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px;">
-            <div>
-                <div class="pill" style="margin-bottom:10px;">1</div>
-                <h3 style="font-size:1rem;">Crie seu perfil</h3>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px;">
+            <div class="card">
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-family:'Archivo',sans-serif;font-weight:800;font-size:.95rem;">1</span>
+                <h3 style="font-size:1rem;margin-top:14px;">Crie seu perfil</h3>
                 <p class="subtitulo">Sem PDF de currículo — só tecnologias, disponibilidade e localização.</p>
             </div>
-            <div>
-                <div class="pill" style="margin-bottom:10px;">2</div>
-                <h3 style="font-size:1rem;">Empresas filtram</h3>
+            <div class="card">
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-family:'Archivo',sans-serif;font-weight:800;font-size:.95rem;">2</span>
+                <h3 style="font-size:1rem;margin-top:14px;">Empresas filtram</h3>
                 <p class="subtitulo">Empresas parceiras do PJP acessam o perfil estruturado, sem taxa.</p>
             </div>
-            <div>
-                <div class="pill" style="margin-bottom:10px;">3</div>
-                <h3 style="font-size:1rem;">Contato direto</h3>
+            <div class="card">
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-family:'Archivo',sans-serif;font-weight:800;font-size:.95rem;">3</span>
+                <h3 style="font-size:1rem;margin-top:14px;">Contato direto</h3>
                 <p class="subtitulo">Sem intermediário — a empresa fala com você assim que encontra seu perfil.</p>
             </div>
         </div>
@@ -78,19 +92,28 @@ $apoiadoras = (new EmpresaModel($pdo))->buscarTodos();
             </div>
         </div>
 
-        <?php if ($apoiadoras): ?>
-            <div style="margin-top:48px;">
-                <h3 style="font-size:1.1rem;margin-bottom:4px;">Empresas apoiadoras do PJP</h3>
-                <p class="subtitulo" style="margin-bottom:16px;">Quem já patrocina o programa e recruta talentos por aqui.</p>
-                <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                    <?php foreach ($apoiadoras as $apoiadora): ?>
-                        <div class="card" style="padding:14px 20px;font-family:'Archivo',sans-serif;font-weight:700;">
-                            <?= htmlspecialchars($apoiadora['nome_fantasia']) ?>
-                        </div>
+        <div style="margin-top:48px;overflow:hidden;">
+            <h3 style="font-size:1.1rem;margin-bottom:4px;">Patrocinadoras e apoiadoras do Programa Jovem Programador</h3>
+            <p class="subtitulo" style="margin-bottom:20px;">O SinalDev nasce dentro desse ecossistema — estas empresas sustentam o PJP como um todo, não são cadastros diretos na plataforma.</p>
+
+            <p class="subtitulo mono" style="text-transform:uppercase;letter-spacing:.05em;font-size:11px;margin-bottom:8px;">Patrocinadoras</p>
+            <div class="apoiadoras-ticker">
+                <div class="apoiadoras-track">
+                    <?php foreach (array_merge($patrocinadores, $patrocinadores) as $nome): ?>
+                        <span class="apoiadora-badge"><?= htmlspecialchars($nome) ?></span>
                     <?php endforeach; ?>
                 </div>
             </div>
-        <?php endif; ?>
+
+            <p class="subtitulo mono" style="text-transform:uppercase;letter-spacing:.05em;font-size:11px;margin:24px 0 8px;">Apoiadoras</p>
+            <div class="apoiadoras-ticker">
+                <div class="apoiadoras-track" style="animation-direction:reverse;">
+                    <?php foreach (array_merge($apoiadores, $apoiadores) as $nome): ?>
+                        <span class="apoiadora-badge apoiadora-badge-secundaria"><?= htmlspecialchars($nome) ?></span>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
     </div>
 
     <section class="login-section">
