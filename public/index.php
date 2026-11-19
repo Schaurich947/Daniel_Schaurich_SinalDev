@@ -6,6 +6,7 @@ require_once __DIR__ . "/../app/Controllers/CandidatoController.php";
 require_once __DIR__ . "/../app/Controllers/EmpresaController.php";
 require_once __DIR__ . "/../app/Controllers/VagaController.php";
 require_once __DIR__ . "/../app/Controllers/CandidaturaController.php";
+require_once __DIR__ . "/../app/Controllers/PainelController.php";
 
 $recurso = $_GET['recurso'] ?? null;
 $acao = $_GET['acao'] ?? 'listar';
@@ -34,8 +35,8 @@ if (!$logado) {
 
 if ($recurso === null) {
     switch ($_SESSION['tipo']) {
-        case 'candidato': $destino = 'vagas';       break;
-        case 'empresa':   $destino = 'vagas';       break;
+        case 'candidato': header("Location: index.php?recurso=painel&acao=candidato"); exit;
+        case 'empresa':   header("Location: index.php?recurso=painel&acao=empresa");   exit;
         default:          $destino = 'candidatos';  // admin
     }
     header("Location: index.php?recurso=$destino&acao=listar");
@@ -44,8 +45,8 @@ if ($recurso === null) {
 
 
 $permissoesPorTipo = [
-    'candidato' => ['vagas', 'candidaturas', 'candidatos'],
-    'empresa'   => ['vagas', 'candidaturas', 'candidatos', 'empresas'],
+    'candidato' => ['vagas', 'candidaturas', 'candidatos', 'painel'],
+    'empresa'   => ['vagas', 'candidaturas', 'candidatos', 'empresas', 'painel'],
     'admin'     => ['candidatos', 'empresas', 'vagas', 'candidaturas'],
 ];
 
@@ -59,6 +60,7 @@ switch ($recurso) {
     case 'empresas':     $controller = new EmpresaController();     break;
     case 'vagas':        $controller = new VagaController();        break;
     case 'candidaturas': $controller = new CandidaturaController(); break;
+    case 'painel':       $controller = new PainelController();      break;
     default:             die("Recurso não encontrado.");
 }
 

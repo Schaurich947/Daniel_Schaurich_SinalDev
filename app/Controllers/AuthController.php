@@ -21,7 +21,7 @@ class AuthController
                 $_SESSION['tipo'] = 'candidato';
                 $_SESSION['id'] = $candidato['id'];
                 $_SESSION['nome'] = $candidato['nome'];
-                header("Location: index.php?recurso=vagas&acao=listar");
+                header("Location: index.php?recurso=painel&acao=candidato");
                 exit;
             }
 
@@ -29,7 +29,7 @@ class AuthController
                 $_SESSION['tipo'] = 'empresa';
                 $_SESSION['id'] = $empresa['id'];
                 $_SESSION['nome'] = $empresa['nome_fantasia'];
-                header("Location: index.php?recurso=vagas&acao=listar");
+                header("Location: index.php?recurso=painel&acao=empresa");
                 exit;
             }
 

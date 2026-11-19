@@ -1,4 +1,7 @@
-<?php $erro = $erro ?? null; ?>
+<?php
+$erro = $erro ?? null;
+$apoiadoras = (new EmpresaModel($pdo))->buscarTodos();
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -42,6 +45,24 @@
         <h2 style="font-size:1.4rem;">Todo talento começa dando um sinal</h2>
         <p class="lead">A primeira linha de código que funciona. O primeiro problema resolvido sozinho. O SinalDev existe pra captar esse sinal cedo — transforma o cadastro de cada aluno e ex-aluno do PJP num perfil estruturado, filtrável por tecnologia, nível e disponibilidade, e coloca ele na frente de quem está pronto pra contratar.</p>
 
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:36px;">
+            <div>
+                <div class="pill" style="margin-bottom:10px;">1</div>
+                <h3 style="font-size:1rem;">Crie seu perfil</h3>
+                <p class="subtitulo">Sem PDF de currículo — só tecnologias, disponibilidade e localização.</p>
+            </div>
+            <div>
+                <div class="pill" style="margin-bottom:10px;">2</div>
+                <h3 style="font-size:1rem;">Empresas filtram</h3>
+                <p class="subtitulo">Empresas parceiras do PJP acessam o perfil estruturado, sem taxa.</p>
+            </div>
+            <div>
+                <div class="pill" style="margin-bottom:10px;">3</div>
+                <h3 style="font-size:1rem;">Contato direto</h3>
+                <p class="subtitulo">Sem intermediário — a empresa fala com você assim que encontra seu perfil.</p>
+            </div>
+        </div>
+
         <div class="duo">
             <div class="duo-card">
                 <div class="tag">Para alunos e ex-alunos do PJP</div>
@@ -56,6 +77,20 @@
                 <a href="index.php?recurso=empresas&acao=novo" class="btn">Cadastrar minha empresa</a>
             </div>
         </div>
+
+        <?php if ($apoiadoras): ?>
+            <div style="margin-top:48px;">
+                <h3 style="font-size:1.1rem;margin-bottom:4px;">Empresas apoiadoras do PJP</h3>
+                <p class="subtitulo" style="margin-bottom:16px;">Quem já patrocina o programa e recruta talentos por aqui.</p>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                    <?php foreach ($apoiadoras as $apoiadora): ?>
+                        <div class="card" style="padding:14px 20px;font-family:'Archivo',sans-serif;font-weight:700;">
+                            <?= htmlspecialchars($apoiadora['nome_fantasia']) ?>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
 
     <section class="login-section">
